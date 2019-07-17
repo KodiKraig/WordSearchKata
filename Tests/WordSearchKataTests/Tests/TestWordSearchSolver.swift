@@ -10,9 +10,13 @@ import WordSearchKataCore
 
 class TestWordSearchSolver: XCTestCase {
     
-    func testSolve_ForwardFacingWord() {
-        let grid: [[Character]] = [["J"], ["I"], ["M"]]
-        
+    func testSolve_HorizontalForwardFacingWord() {
+        let grid: [[Character]] = [
+            ["J", "I", "M"],
+            ["A", "B", "C"],
+            ["D", "E", "F"]
+        ]
+
         let locations = WordSearchSolver(grid: grid).solve(forWord: "JIM")
         
         XCTAssertEqual(locations.count, 3)
@@ -26,10 +30,14 @@ class TestWordSearchSolver: XCTestCase {
         XCTAssertEqual(locations[2].y, 0)
     }
     
-    func testSolve_BackwardFacingWord() {
-        let grid: [[Character]] = [["J"], ["I"], ["M"]]
-        
-        let locations = WordSearchSolver(grid: grid).solve(forWord: "MIJ")
+    func testSolve_HorizontalBackwardFacingWord() {
+        let grid: [[Character]] = [
+            ["M", "I", "J"],
+            ["A", "B", "C"],
+            ["D", "E", "F"]
+        ]
+
+        let locations = WordSearchSolver(grid: grid).solve(forWord: "JIM")
         
         XCTAssertEqual(locations.count, 3)
         XCTAssertEqual(locations[0].x, 2)
@@ -40,5 +48,25 @@ class TestWordSearchSolver: XCTestCase {
         
         XCTAssertEqual(locations[2].x, 0)
         XCTAssertEqual(locations[2].y, 0)
+    }
+    
+    func testSolve_VerticalForwardFacingWord() {
+        let grid: [[Character]] = [
+            ["J", "A", "B"],
+            ["I", "B", "C"],
+            ["M", "E", "F"]
+        ]
+
+        let locations = WordSearchSolver(grid: grid).solve(forWord: "JIM")
+
+        XCTAssertEqual(locations.count, 3)
+        XCTAssertEqual(locations[0].x, 0)
+        XCTAssertEqual(locations[0].y, 0)
+
+        XCTAssertEqual(locations[1].x, 0)
+        XCTAssertEqual(locations[1].y, 1)
+
+        XCTAssertEqual(locations[2].x, 0)
+        XCTAssertEqual(locations[2].y, 2)
     }
 }

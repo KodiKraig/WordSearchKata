@@ -28,12 +28,12 @@ public class WordSearchSolver {
         for i in 0..<grid.count {
             for j in 0..<grid[i].count {
                 
-                // Look forward
+                // Look forward horizontal
                 var forwardIndex = 0
-                for k in i..<grid.count {
-                    if grid[k][j] == word[forwardIndex] {
+                for k in j..<grid.count {
+                    if grid[i][k] == word[forwardIndex] {
                         // Character match
-                        coords.append(XYCoordinate(x: k, y: j))
+                        coords.append(XYCoordinate(x: k, y: i))
 
                         if forwardIndex == word.count - 1 {
                             // Success!
@@ -46,18 +46,36 @@ public class WordSearchSolver {
                 }
                 coords.removeAll()
 
-                // Look backward
+                // Look backward horizontal
                 var backwardIndex = 0
-                for k in stride(from: i, through: 0, by: -1) {
-                    if grid[k][j] == word[backwardIndex] {
+                for k in stride(from: j, through: 0, by: -1) {
+                    if grid[i][k] == word[backwardIndex] {
                         // Character match
-                        coords.append(XYCoordinate(x: k, y: j))
+                        coords.append(XYCoordinate(x: k, y: i))
                         
                         if backwardIndex == word.count - 1 {
                             // Success!
                             return coords
                         }
                         backwardIndex+=1
+                    } else {
+                        break
+                    }
+                }
+                coords.removeAll()
+                
+                // Look forward vertical
+                forwardIndex = 0
+                for k in i..<grid.count {
+                    if grid[k][j] == word[forwardIndex] {
+                        // Character match
+                        coords.append(XYCoordinate(x: j, y: k))
+                        
+                        if forwardIndex == word.count - 1 {
+                            // Success!
+                            return coords
+                        }
+                        forwardIndex+=1
                     } else {
                         break
                     }
