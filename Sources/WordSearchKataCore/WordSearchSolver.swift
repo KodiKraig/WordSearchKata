@@ -81,6 +81,24 @@ public class WordSearchSolver {
                     }
                 }
                 coords.removeAll()
+                
+                // Look backward vertical
+                backwardIndex = 0
+                for k in stride(from: i, through: 0, by: -1) {
+                    if grid[k][j] == word[backwardIndex] {
+                        // Character match
+                        coords.append(XYCoordinate(x: j, y: k))
+                        
+                        if backwardIndex == word.count - 1 {
+                            // Success!
+                            return coords
+                        }
+                        backwardIndex+=1
+                    } else {
+                        break
+                    }
+                }
+                coords.removeAll()
             }
         }
         return coords
