@@ -7,15 +7,6 @@
 
 import Foundation
 
-public struct XYCoordinate {
-    public let x: Int
-    public let y: Int
-    
-    public var prettyPrint: String {
-        return "(\(x),\(y))"
-    }
-}
-
 public class WordSearchSolver {
     
     private enum Axis {
