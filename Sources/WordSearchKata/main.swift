@@ -1,0 +1,3 @@
+import WordSearchKataCore
+
+App.run()
