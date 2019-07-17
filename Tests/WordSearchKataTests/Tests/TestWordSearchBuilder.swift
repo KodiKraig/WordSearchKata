@@ -16,7 +16,7 @@ class TestWordSearchBuilder: XCTestCase {
     }
 
     func testEmptyWordSearch() {
-        let builderResult = WordSearchBuilder.build(fromFileNamed: "\(FileManager.default.currentDirectoryPath)/Tests/WordSearchKataTests/TestData/EmptyFile.txt")
+        let builderResult = WordSearchBuilder.build(fromFileNamed: TestDataFiles.empty.path)
         XCTAssertNil(builderResult.error)
         XCTAssertEqual(builderResult.result!.count, 0)
     }
