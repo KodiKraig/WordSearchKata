@@ -41,11 +41,28 @@ public class WordSearchSolver {
                         }
                         forwardIndex+=1
                     } else {
-                        // Fail
-                        coords.removeAll()
                         break
                     }
                 }
+                coords.removeAll()
+
+                // Look backward
+                var backwardIndex = 0
+                for k in stride(from: i, through: 0, by: -1) {
+                    if grid[k][j] == word[backwardIndex] {
+                        // Character match
+                        coords.append(XYCoordinate(x: k, y: j))
+                        
+                        if backwardIndex == word.count - 1 {
+                            // Success!
+                            return coords
+                        }
+                        backwardIndex+=1
+                    } else {
+                        break
+                    }
+                }
+                coords.removeAll()
             }
         }
         return coords
