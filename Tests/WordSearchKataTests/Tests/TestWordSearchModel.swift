@@ -10,7 +10,7 @@ import XCTest
 import WordSearchKataCore
 
 class TestWordSearchBuilder: XCTestCase {
-    
+
     // MARK: build
 
     func testBuild_NameDoesNotExist() {
@@ -20,7 +20,7 @@ class TestWordSearchBuilder: XCTestCase {
     func testBuild_EmptyWordSearch() {
         let builderResult = WordSearchModel.build(fromFileAtPath: TestDataFiles.empty.path)
         XCTAssertNil(builderResult.error)
-        
+
         let model = builderResult.result!
         XCTAssertEqual(model.searchWords.count, 0)
         XCTAssertEqual(model.grid.count, 0)
@@ -29,7 +29,7 @@ class TestWordSearchBuilder: XCTestCase {
     func testBuild_SmallWordSearch() {
         let builderResult = WordSearchModel.build(fromFileAtPath: TestDataFiles.smallSingleWorld.path)
         XCTAssertNil(builderResult.error)
-        
+
         let model = builderResult.result!
         XCTAssertEqual(model.searchWords.count, 4)
         XCTAssertEqual(model.grid.count, 3)
