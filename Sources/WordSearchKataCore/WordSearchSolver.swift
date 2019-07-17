@@ -66,11 +66,17 @@ public class WordSearchSolver {
         var runningIndex = 0
         for i in stride(from: startIndex, through: endIndex, by: step) {
             
-            let char = word[runningIndex]
+            // Get the current character to compare based on the direction we are searching
+            var currentChar: Character!
+            switch direction {
+            case .vertical: currentChar = grid[i][baseIndex]
+            case .horizontal: currentChar = grid[baseIndex][i]
+            case .diagonal: currentChar = grid[i][baseIndex + runningIndex]
+            }
             
-            if (direction == .vertical && grid[i][baseIndex] == char) || (direction == .horizontal && grid[baseIndex][i] == char) || (direction == .diagonal && grid[i][baseIndex + runningIndex] == char) {
+            if currentChar == word[runningIndex] {
                 
-                // Character matching
+                // Character matching was a success so we will add the current position
                 switch direction {
                 case .vertical: coords.append(XYCoordinate(x: baseIndex, y: i))
                 case .horizontal: coords.append(XYCoordinate(x: i, y: baseIndex))
