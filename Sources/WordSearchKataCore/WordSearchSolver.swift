@@ -17,6 +17,11 @@ public struct XYCoordinate {
 }
 
 public class WordSearchSolver {
+    
+    private enum Direction {
+        case vertical, horizontal
+    }
+
     private let grid: [[Character]]
     
     public init(grid: [[Character]]) {
@@ -29,79 +34,54 @@ public class WordSearchSolver {
             for j in 0..<grid[i].count {
                 
                 // Look forward horizontal
-                var forwardIndex = 0
-                for k in j..<grid.count {
-                    if grid[i][k] == word[forwardIndex] {
-                        // Character match
-                        coords.append(XYCoordinate(x: k, y: i))
-
-                        if forwardIndex == word.count - 1 {
-                            // Success!
-                            return coords
-                        }
-                        forwardIndex+=1
-                    } else {
-                        break
-                    }
+                if solve(startIndex: j, endIndex: grid.count - 1, step: 1, baseIndex: i, word: word, direction: .horizontal, coords: &coords) {
+                    return coords
                 }
-                coords.removeAll()
 
                 // Look backward horizontal
-                var backwardIndex = 0
-                for k in stride(from: j, through: 0, by: -1) {
-                    if grid[i][k] == word[backwardIndex] {
-                        // Character match
-                        coords.append(XYCoordinate(x: k, y: i))
-                        
-                        if backwardIndex == word.count - 1 {
-                            // Success!
-                            return coords
-                        }
-                        backwardIndex+=1
-                    } else {
-                        break
-                    }
+                if solve(startIndex: j, endIndex: 0, step: -1, baseIndex: i, word: word, direction: .horizontal, coords: &coords) {
+                    return coords
                 }
-                coords.removeAll()
                 
                 // Look forward vertical
-                forwardIndex = 0
-                for k in i..<grid.count {
-                    if grid[k][j] == word[forwardIndex] {
-                        // Character match
-                        coords.append(XYCoordinate(x: j, y: k))
-                        
-                        if forwardIndex == word.count - 1 {
-                            // Success!
-                            return coords
-                        }
-                        forwardIndex+=1
-                    } else {
-                        break
-                    }
+                if solve(startIndex: i, endIndex: grid.count - 1, step: 1, baseIndex: j, word: word, direction: .vertical, coords: &coords) {
+                    return coords
                 }
-                coords.removeAll()
                 
                 // Look backward vertical
-                backwardIndex = 0
-                for k in stride(from: i, through: 0, by: -1) {
-                    if grid[k][j] == word[backwardIndex] {
-                        // Character match
-                        coords.append(XYCoordinate(x: j, y: k))
-                        
-                        if backwardIndex == word.count - 1 {
-                            // Success!
-                            return coords
-                        }
-                        backwardIndex+=1
-                    } else {
-                        break
-                    }
+                if solve(startIndex: i, endIndex: 0, step: -1, baseIndex: j, word: word, direction: .vertical, coords: &coords) {
+                    return coords
                 }
-                coords.removeAll()
             }
         }
         return coords
+    }
+    
+    private func solve(startIndex: Int, endIndex: Int, step: Int, baseIndex: Int, word: String, direction: Direction, coords: inout [XYCoordinate]) -> Bool {
+        var runningIndex = 0
+        for i in stride(from: startIndex, through: endIndex, by: step) {
+            
+            let char = word[runningIndex]
+            
+            if (direction == .vertical && grid[i][baseIndex] == char) || (direction == .horizontal && grid[baseIndex][i] == char) {
+                
+                // Character matching
+                switch direction {
+                case .vertical: coords.append(XYCoordinate(x: baseIndex, y: i))
+                case .horizontal: coords.append(XYCoordinate(x: i, y: baseIndex))
+                }
+                
+                if runningIndex == word.count - 1 {
+                    // Success!
+                    return true
+                }
+                runningIndex+=1
+            } else {
+                break
+            }
+        }
+        coords.removeAll()
+        return false
     }
 }
 
