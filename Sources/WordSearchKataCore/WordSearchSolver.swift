@@ -19,7 +19,7 @@ public struct XYCoordinate {
 public class WordSearchSolver {
     
     private enum Direction {
-        case vertical, horizontal
+        case vertical, horizontal, diagonal
     }
 
     private let grid: [[Character]]
@@ -52,6 +52,11 @@ public class WordSearchSolver {
                 if solve(startIndex: i, endIndex: 0, step: -1, baseIndex: j, word: word, direction: .vertical, coords: &coords) {
                     return coords
                 }
+                
+                // Look forward diagonal
+                if solve(startIndex: i, endIndex: grid.count - 1, step: 1, baseIndex: j, word: word, direction: .diagonal, coords: &coords) {
+                    return coords
+                }
             }
         }
         return coords
@@ -63,12 +68,13 @@ public class WordSearchSolver {
             
             let char = word[runningIndex]
             
-            if (direction == .vertical && grid[i][baseIndex] == char) || (direction == .horizontal && grid[baseIndex][i] == char) {
+            if (direction == .vertical && grid[i][baseIndex] == char) || (direction == .horizontal && grid[baseIndex][i] == char) || (direction == .diagonal && grid[i][baseIndex + runningIndex] == char) {
                 
                 // Character matching
                 switch direction {
                 case .vertical: coords.append(XYCoordinate(x: baseIndex, y: i))
                 case .horizontal: coords.append(XYCoordinate(x: i, y: baseIndex))
+                case .diagonal: coords.append(XYCoordinate(x: i, y: baseIndex + runningIndex))
                 }
                 
                 if runningIndex == word.count - 1 {
