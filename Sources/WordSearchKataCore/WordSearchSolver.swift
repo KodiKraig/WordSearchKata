@@ -18,8 +18,12 @@ public struct XYCoordinate {
 
 public class WordSearchSolver {
     
-    private enum Direction {
+    private enum Axis {
         case vertical, horizontal, diagonal
+    }
+    
+    private enum Direction {
+        case forward, backward
     }
 
     private let grid: [[Character]]
@@ -34,27 +38,32 @@ public class WordSearchSolver {
             for j in 0..<grid[i].count {
                 
                 // Look forward horizontal
-                if solve(startIndex: j, endIndex: grid.count - 1, step: 1, baseIndex: i, word: word, direction: .horizontal, coords: &coords) {
+                if solve(word, row: i, column: j, direction: .forward, axis: .horizontal, coords: &coords) {
                     return coords
                 }
 
                 // Look backward horizontal
-                if solve(startIndex: j, endIndex: 0, step: -1, baseIndex: i, word: word, direction: .horizontal, coords: &coords) {
+                if solve(word, row: i, column: j, direction: .backward, axis: .horizontal, coords: &coords) {
                     return coords
                 }
-                
+
                 // Look forward vertical
-                if solve(startIndex: i, endIndex: grid.count - 1, step: 1, baseIndex: j, word: word, direction: .vertical, coords: &coords) {
+                if solve(word, row: i, column: j, direction: .forward, axis: .vertical, coords: &coords) {
                     return coords
                 }
-                
+
                 // Look backward vertical
-                if solve(startIndex: i, endIndex: 0, step: -1, baseIndex: j, word: word, direction: .vertical, coords: &coords) {
+                if solve(word, row: i, column: j, direction: .backward, axis: .vertical, coords: &coords) {
                     return coords
                 }
-                
+
                 // Look forward diagonal
-                if solve(startIndex: i, endIndex: grid.count - 1, step: 1, baseIndex: j, word: word, direction: .diagonal, coords: &coords) {
+                if solve(word, row: i, column: j, direction: .forward, axis: .diagonal, coords: &coords) {
+                    return coords
+                }
+
+                // Look backward diagonal
+                if solve(word, row: i, column: j, direction: .backward, axis: .diagonal, coords: &coords) {
                     return coords
                 }
             }
@@ -62,38 +71,45 @@ public class WordSearchSolver {
         return coords
     }
     
-    private func solve(startIndex: Int, endIndex: Int, step: Int, baseIndex: Int, word: String, direction: Direction, coords: inout [XYCoordinate]) -> Bool {
-        var runningIndex = 0
-        for i in stride(from: startIndex, through: endIndex, by: step) {
-            
-            // Get the current character to compare based on the direction we are searching
-            var currentChar: Character!
-            switch direction {
-            case .vertical: currentChar = grid[i][baseIndex]
-            case .horizontal: currentChar = grid[baseIndex][i]
-            case .diagonal: currentChar = grid[i][baseIndex + runningIndex]
+    private func solve(_ word: String, row: Int, column: Int, wordIndex: Int = 0, direction: Direction, axis: Axis, coords: inout [XYCoordinate]) -> Bool {
+        if row < 0 || row >= grid.count || column < 0 || column >= grid.count || wordIndex >= word.count || grid[row][column] != word[wordIndex] {
+            coords.removeAll()
+            return false
+        }
+        
+        coords.append(XYCoordinate(x: column, y: row))
+        
+        if wordIndex == word.count - 1 {
+            return true
+        }
+        
+        var nextRowPosition = row
+        var nextColumnPosition = column
+        
+        switch direction {
+        case .forward:
+            switch axis {
+            case .horizontal:
+                nextColumnPosition+=1
+            case .vertical:
+                nextRowPosition+=1
+            case .diagonal:
+                nextRowPosition+=1
+                nextColumnPosition+=1
             }
-            
-            if currentChar == word[runningIndex] {
-                
-                // Character matching was a success so we will add the current position
-                switch direction {
-                case .vertical: coords.append(XYCoordinate(x: baseIndex, y: i))
-                case .horizontal: coords.append(XYCoordinate(x: i, y: baseIndex))
-                case .diagonal: coords.append(XYCoordinate(x: i, y: baseIndex + runningIndex))
-                }
-                
-                if runningIndex == word.count - 1 {
-                    // Success!
-                    return true
-                }
-                runningIndex+=1
-            } else {
-                break
+        case .backward:
+            switch axis {
+            case .horizontal:
+                nextColumnPosition-=1
+            case .vertical:
+                nextRowPosition-=1
+            case .diagonal:
+                nextRowPosition-=1
+                nextColumnPosition-=1
             }
         }
-        coords.removeAll()
-        return false
+        
+        return solve(word, row: nextRowPosition, column: nextColumnPosition, wordIndex: wordIndex + 1, direction: direction, axis: axis, coords: &coords)
     }
 }
 

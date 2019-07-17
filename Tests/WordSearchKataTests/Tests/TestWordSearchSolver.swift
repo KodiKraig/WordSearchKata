@@ -109,4 +109,24 @@ class TestWordSearchSolver: XCTestCase {
         XCTAssertEqual(locations[2].x, 2)
         XCTAssertEqual(locations[2].y, 2)
     }
+    
+    func testSolve_DiagonalBackwardFacingWord() {
+        let grid: [[Character]] = [
+            ["M", "A", "B"],
+            ["F", "I", "C"],
+            ["H", "E", "J"]
+        ]
+        
+        let locations = WordSearchSolver(grid: grid).solve(forWord: "JIM")
+        
+        XCTAssertEqual(locations.count, 3)
+        XCTAssertEqual(locations[0].x, 2)
+        XCTAssertEqual(locations[0].y, 2)
+        
+        XCTAssertEqual(locations[1].x, 1)
+        XCTAssertEqual(locations[1].y, 1)
+        
+        XCTAssertEqual(locations[2].x, 0)
+        XCTAssertEqual(locations[2].y, 0)
+    }
 }
