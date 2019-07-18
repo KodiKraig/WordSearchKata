@@ -9,14 +9,25 @@ import Foundation
 
 public class WordSearchSolver {
     
+    private typealias SearchDirection = (direction: Direction, axis: Axis)
+
     private enum Axis {
-        case vertical, horizontal, diagonal
+        case vertical, horizontal, forwardDiagonal
     }
     
     private enum Direction {
         case forward, backward
     }
-
+    
+    private static let searchDirections: [SearchDirection] = [
+        (.forward, .horizontal),
+        (.backward, .horizontal),
+        (.forward, .vertical),
+        (.backward, .vertical),
+        (.forward, .forwardDiagonal),
+        (.backward, .forwardDiagonal),
+    ]
+    
     private let grid: [[Character]]
     
     public init(grid: [[Character]]) {
@@ -27,35 +38,10 @@ public class WordSearchSolver {
         var coords = [XYCoordinate]()
         for i in 0..<grid.count {
             for j in 0..<grid[i].count {
-                
-                // Look forward horizontal
-                if solve(word, row: i, column: j, direction: .forward, axis: .horizontal, coords: &coords) {
-                    return coords
-                }
-
-                // Look backward horizontal
-                if solve(word, row: i, column: j, direction: .backward, axis: .horizontal, coords: &coords) {
-                    return coords
-                }
-
-                // Look forward vertical
-                if solve(word, row: i, column: j, direction: .forward, axis: .vertical, coords: &coords) {
-                    return coords
-                }
-
-                // Look backward vertical
-                if solve(word, row: i, column: j, direction: .backward, axis: .vertical, coords: &coords) {
-                    return coords
-                }
-
-                // Look forward diagonal
-                if solve(word, row: i, column: j, direction: .forward, axis: .diagonal, coords: &coords) {
-                    return coords
-                }
-
-                // Look backward diagonal
-                if solve(word, row: i, column: j, direction: .backward, axis: .diagonal, coords: &coords) {
-                    return coords
+                for searchDirection in WordSearchSolver.searchDirections {
+                    if solve(word, row: i, column: j, direction: searchDirection.direction, axis: searchDirection.axis, coords: &coords) {
+                        return coords
+                    }
                 }
             }
         }
@@ -84,7 +70,7 @@ public class WordSearchSolver {
                 nextColumnPosition+=1
             case .vertical:
                 nextRowPosition+=1
-            case .diagonal:
+            case .forwardDiagonal:
                 nextRowPosition+=1
                 nextColumnPosition+=1
             }
@@ -94,12 +80,11 @@ public class WordSearchSolver {
                 nextColumnPosition-=1
             case .vertical:
                 nextRowPosition-=1
-            case .diagonal:
+            case .forwardDiagonal:
                 nextRowPosition-=1
                 nextColumnPosition-=1
             }
         }
-        
         return solve(word, row: nextRowPosition, column: nextColumnPosition, wordIndex: wordIndex + 1, direction: direction, axis: axis, coords: &coords)
     }
 }
