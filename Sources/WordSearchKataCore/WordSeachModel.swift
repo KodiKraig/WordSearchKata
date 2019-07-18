@@ -1,10 +1,6 @@
 import Foundation
 
-public typealias Result<T> = (result: T?, error: String?)
-
 public struct WordSearchModel {
-
-    static let wordSearchDirectoryName = "WordSearches"
 
     public let searchWords: [String]
     public let grid: [[Character]]

@@ -1,5 +1,7 @@
 import Foundation
 
+public typealias Result<T> = (result: T?, error: String?)
+
 public final class App {
     
     /// Given a properly formatted word search file path, parse the word search and return the formatted word location string.
