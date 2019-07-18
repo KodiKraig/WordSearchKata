@@ -21,7 +21,7 @@ public struct WordSearchSolver {
     
     /// Create a new solver
     ///
-    /// - Parameter grid: A 2D array of characters representing a word search
+    /// - Parameter grid: A square 2D array of characters representing a word search
     public init(grid: [[Character]]) {
         self.grid = grid
     }
