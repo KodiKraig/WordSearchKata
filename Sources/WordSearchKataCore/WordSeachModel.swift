@@ -3,10 +3,17 @@ import Foundation
 public typealias Result<T> = (result: T?, error: String?)
 
 public struct WordSearchModel {
-
+    
+    /// Word search words to find within the grid
     public let searchWords: [String]
+    
+    /// Word search representation
     public let grid: [[Character]]
-
+    
+    /// Build a model from the given file path
+    ///
+    /// - Parameter filePath: location of word search file
+    /// - Returns: model representing the word search at the given file path
     public static func build(fromFileAtPath filePath: String) -> Result<WordSearchModel> {
         // Ensure the file exists
         if !FileManager.default.fileExists(atPath: filePath) {

@@ -18,7 +18,10 @@ public struct WordSearchSolver {
     }
 
     private let grid: [[Character]]
-
+    
+    /// Create a new solver
+    ///
+    /// - Parameter grid: A 2D array of characters representing a word search
     public init(grid: [[Character]]) {
         self.grid = grid
     }
@@ -42,7 +45,11 @@ public struct WordSearchSolver {
         }
         return output
     }
-
+    
+    /// Find location of the given word
+    ///
+    /// - Parameter word: Word to search for within the grid
+    /// - Returns: Array of coordinates representing where the word is within the current grid
     public func solve(forWord word: String) -> [XYCoordinate] {
         var coords = [XYCoordinate]()
         for i in 0..<grid.count {
