@@ -9,8 +9,6 @@ import Foundation
 
 public class WordSearchSolver {
     
-    private typealias SearchDirection = (direction: Direction, axis: Axis)
-
     private enum Axis: CaseIterable {
         case vertical, horizontal, forwardDiagonal, backwardDiagonal
     }
