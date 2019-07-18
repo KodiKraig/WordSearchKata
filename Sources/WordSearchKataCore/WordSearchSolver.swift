@@ -7,9 +7,7 @@
 
 import Foundation
 
-public typealias Result<T> = (result: T?, error: String?)
-
-public class WordSearchSolver {
+public struct WordSearchSolver {
 
     private enum Axis: CaseIterable {
         case vertical, horizontal, forwardDiagonal, backwardDiagonal

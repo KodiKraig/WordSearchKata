@@ -1,5 +1,7 @@
 import Foundation
 
+public typealias Result<T> = (result: T?, error: String?)
+
 public struct WordSearchModel {
 
     public let searchWords: [String]
@@ -32,7 +34,9 @@ public struct WordSearchModel {
             return (nil, "Unable to parse grid: \(error.localizedDescription)")
         }
 
-        guard searchWords != nil, grid != nil else { return (nil, "Search words or grid missing.") }
+        if searchWords == nil || grid == nil {
+            return (nil, "Search words or grid missing.")
+        }
         return (WordSearchModel(searchWords: searchWords!, grid: grid!), nil)
     }
 }
