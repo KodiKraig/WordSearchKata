@@ -2,7 +2,8 @@ import Foundation
 import WordSearchKataCore
 
 func main() {
-    let wordSearchFileName = CommandLine.arguments.count > 2 ? CommandLine.arguments[2] : "DefaultWordSearch.txt"
+    let arguments = ProcessInfo.processInfo.arguments
+    let wordSearchFileName = arguments.count > 1 ? arguments[1] : "DefaultWordSearch.txt"
     print(App.solveWordSearch(filePath: "\(FileManager.default.currentDirectoryPath)/WordSearches/\(wordSearchFileName)"))
 }
 
