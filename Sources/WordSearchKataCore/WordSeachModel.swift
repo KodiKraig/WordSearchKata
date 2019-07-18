@@ -13,9 +13,9 @@ public struct WordSearchModel {
             return (nil, "\(filePath) does not exist")
         }
 
-        var searchWords: [String]?
-        var grid: [[Character]]?
-        
+        var searchWords: [String]!
+        var grid: [[Character]]!
+
         do {
             let data = try String(contentsOfFile: filePath, encoding: .utf8)
 
@@ -28,14 +28,10 @@ public struct WordSearchModel {
             for line in myStrings {
                 guard !line.isEmpty else { continue }
                 let newChars = line.components(separatedBy: ",").compactMap({ $0[$0.startIndex] })
-                grid!.append(newChars)
+                grid.append(newChars)
             }
         } catch {
             return (nil, "Unable to parse grid: \(error.localizedDescription)")
-        }
-
-        if searchWords == nil || grid == nil {
-            return (nil, "Search words or grid missing.")
         }
         return (WordSearchModel(searchWords: searchWords!, grid: grid!), nil)
     }
