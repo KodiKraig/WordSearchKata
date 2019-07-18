@@ -90,7 +90,7 @@ class TestWordSearchSolver: XCTestCase {
         XCTAssertEqual(locations[2].y, 0)
     }
     
-    func testSolve_DiagonalForwardFacingWord() {
+    func testSolve_ForwardDiagonalForwardFacingWord() {
         let grid: [[Character]] = [
             ["J", "A", "B"],
             ["F", "I", "C"],
@@ -110,7 +110,7 @@ class TestWordSearchSolver: XCTestCase {
         XCTAssertEqual(locations[2].y, 2)
     }
     
-    func testSolve_DiagonalBackwardFacingWord() {
+    func testSolve_ForwardDiagonalBackwardFacingWord() {
         let grid: [[Character]] = [
             ["M", "A", "B"],
             ["F", "I", "C"],
@@ -127,6 +127,47 @@ class TestWordSearchSolver: XCTestCase {
         XCTAssertEqual(locations[1].y, 1)
         
         XCTAssertEqual(locations[2].x, 0)
+        XCTAssertEqual(locations[2].y, 0)
+    }
+    
+    func testSolve_BackwardDiagonalForwardFacingWord() {
+        let grid: [[Character]] = [
+            ["T", "A", "J"],
+            ["F", "I", "C"],
+            ["M", "E", "R"]
+        ]
+        
+        let locations = WordSearchSolver(grid: grid).solve(forWord: "JIM")
+        
+        XCTAssertEqual(locations.count, 3)
+        XCTAssertEqual(locations[0].x, 2)
+        XCTAssertEqual(locations[0].y, 0)
+        
+        XCTAssertEqual(locations[1].x, 1)
+        XCTAssertEqual(locations[1].y, 1)
+        
+        XCTAssertEqual(locations[2].x, 0)
+        XCTAssertEqual(locations[2].y, 2)
+    }
+
+    func testSolve_BackwardDiagonalBackwardFacingWord() {
+        let grid: [[Character]] = [
+            ["T", "A", "M"],
+            ["F", "I", "C"],
+            ["J", "E", "R"]
+            
+        ]
+        
+        let locations = WordSearchSolver(grid: grid).solve(forWord: "JIM")
+        
+        XCTAssertEqual(locations.count, 3)
+        XCTAssertEqual(locations[0].x, 0)
+        XCTAssertEqual(locations[0].y, 2)
+        
+        XCTAssertEqual(locations[1].x, 1)
+        XCTAssertEqual(locations[1].y, 1)
+        
+        XCTAssertEqual(locations[2].x, 2)
         XCTAssertEqual(locations[2].y, 0)
     }
 }

@@ -11,22 +11,13 @@ public class WordSearchSolver {
     
     private typealias SearchDirection = (direction: Direction, axis: Axis)
 
-    private enum Axis {
-        case vertical, horizontal, forwardDiagonal
+    private enum Axis: CaseIterable {
+        case vertical, horizontal, forwardDiagonal, backwardDiagonal
     }
     
-    private enum Direction {
+    private enum Direction: CaseIterable {
         case forward, backward
     }
-    
-    private static let searchDirections: [SearchDirection] = [
-        (.forward, .horizontal),
-        (.backward, .horizontal),
-        (.forward, .vertical),
-        (.backward, .vertical),
-        (.forward, .forwardDiagonal),
-        (.backward, .forwardDiagonal),
-    ]
     
     private let grid: [[Character]]
     
@@ -38,9 +29,11 @@ public class WordSearchSolver {
         var coords = [XYCoordinate]()
         for i in 0..<grid.count {
             for j in 0..<grid[i].count {
-                for searchDirection in WordSearchSolver.searchDirections {
-                    if solve(word, row: i, column: j, direction: searchDirection.direction, axis: searchDirection.axis, coords: &coords) {
-                        return coords
+                for direction in Direction.allCases {
+                    for axis in Axis.allCases {
+                        if solve(word, row: i, column: j, direction: direction, axis: axis, coords: &coords) {
+                            return coords
+                        }
                     }
                 }
             }
@@ -73,6 +66,9 @@ public class WordSearchSolver {
             case .forwardDiagonal:
                 nextRowPosition+=1
                 nextColumnPosition+=1
+            case .backwardDiagonal:
+                nextRowPosition-=1
+                nextColumnPosition+=1
             }
         case .backward:
             switch axis {
@@ -82,6 +78,9 @@ public class WordSearchSolver {
                 nextRowPosition-=1
             case .forwardDiagonal:
                 nextRowPosition-=1
+                nextColumnPosition-=1
+            case .backwardDiagonal:
+                nextRowPosition+=1
                 nextColumnPosition-=1
             }
         }
