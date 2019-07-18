@@ -13,7 +13,7 @@ Run the word search solver on the default word search file with the following co
 `swift run`
 
 #### Custom Word Search
-If you would like to add your own word search, add the file to the WordSearches directory in root and run the following command
+If you would like to add your own word search, add the file to the *WordSearches* directory in root and run the following command
 
 `swift run WordSearchKata <FileName>`
 
