@@ -16,9 +16,9 @@ public struct WordSearchModel {
         
         do {
             let data = try String(contentsOfFile: filePath, encoding: .utf8)
-            var myStrings = data.components(separatedBy: .newlines)
 
             // Parse the search words
+            var myStrings = data.components(separatedBy: .newlines)
             searchWords = myStrings.remove(at: 0).components(separatedBy: ",").filter({ !$0.isEmpty })
 
             // Parse the word search grid
@@ -32,7 +32,7 @@ public struct WordSearchModel {
             return (nil, "Unable to parse grid: \(error.localizedDescription)")
         }
 
-        guard searchWords != nil, grid != nil else { return (nil, nil) }
+        guard searchWords != nil, grid != nil else { return (nil, "Search words or grid missing.") }
         return (WordSearchModel(searchWords: searchWords!, grid: grid!), nil)
     }
 }
