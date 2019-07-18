@@ -7,22 +7,44 @@
 
 import Foundation
 
+public typealias Result<T> = (result: T?, error: String?)
+
 public class WordSearchSolver {
-    
+
     private enum Axis: CaseIterable {
         case vertical, horizontal, forwardDiagonal, backwardDiagonal
     }
-    
+
     private enum Direction: CaseIterable {
         case forward, backward
     }
-    
+
     private let grid: [[Character]]
-    
+
     public init(grid: [[Character]]) {
         self.grid = grid
     }
-    
+
+    /// Given a properly formatted word search file path, parse the word search and return the formatted word location string.
+    ///
+    /// - Parameter filePath: File path leading to word search txt file
+    /// - Returns: Formatted word location(s)
+    public static func solve(filePath: String) -> String {
+        let result = WordSearchModel.build(fromFileAtPath: filePath)
+        guard
+            let model = result.result,
+            result.error == nil
+            else { return result.error ?? "Unable to construct word search" }
+
+        var output = ""
+        let solver = WordSearchSolver(grid: model.grid)
+
+        for word in model.searchWords {
+            output+="\(word): \(solver.solve(forWord: word).compactMap({ $0.prettyPrint }).joined(separator: ","))\n"
+        }
+        return output
+    }
+
     public func solve(forWord word: String) -> [XYCoordinate] {
         var coords = [XYCoordinate]()
         for i in 0..<grid.count {
@@ -38,22 +60,22 @@ public class WordSearchSolver {
         }
         return coords
     }
-    
+
     private func solve(_ word: String, row: Int, column: Int, wordIndex: Int = 0, direction: Direction, axis: Axis, coords: inout [XYCoordinate]) -> Bool {
         if row < 0 || row >= grid.count || column < 0 || column >= grid.count || wordIndex >= word.count || grid[row][column] != word[wordIndex] {
             coords.removeAll()
             return false
         }
-        
+
         coords.append(XYCoordinate(x: column, y: row))
-        
+
         if wordIndex == word.count - 1 {
             return true
         }
-        
+
         var nextRowPosition = row
         var nextColumnPosition = column
-        
+
         switch direction {
         case .forward:
             switch axis {
